@@ -1,5 +1,6 @@
 class MemosController < ApplicationController
   before_action :set_memo, only: [:show, :edit, :update, :destroy]
+  before_filter :login_required, only: [:new, :edit, :create, :update, :destroy]
 
   # GET /memos
   # GET /memos.json
@@ -18,34 +19,27 @@ class MemosController < ApplicationController
 
   # GET /memos/new
   def new
-    if logged_in?
-      @memo = current_user.memos.create!
-    else
-      redirect_to root_path, alert: 'Login required'
-    end
+    @memo = current_user.memos.create!
   end
 
   # GET /memos/1/edit
   def edit
+    @memo.user_id != current_user.id
   end
 
   # POST /memos
   # POST /memos.json
   def create
-    if logged_in?
-      @memo = Memo.new(memo_params)
+    @memo = current_user.memos.create!(memo_params)
 
-      respond_to do |format|
-        if @memo.save
-          format.html { redirect_to @memo, notice: 'Memo was successfully created.' }
-          format.json { render :show, status: :created, location: @memo }
-        else
-          format.html { render :new }
-          format.json { render json: @memo.errors, status: :unprocessable_entity }
-        end
+    respond_to do |format|
+      if @memo.save
+        format.html { redirect_to @memo, notice: 'Memo was successfully created.' }
+        format.json { render :show, status: :created, location: @memo }
+      else
+        format.html { render :new }
+        format.json { render json: @memo.errors, status: :unprocessable_entity }
       end
-    else
-      redirect_to root_path, alert: 'Login required'
     end
   end
 
@@ -82,5 +76,11 @@ class MemosController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def memo_params
       params.require(:memo).permit(:title, :body)
+    end
+
+    def login_required
+      if not logged_in?
+        redirect_to root_path, alert: 'Login required'
+      end
     end
 end
