@@ -4,7 +4,11 @@ class MemosController < ApplicationController
   # GET /memos
   # GET /memos.json
   def index
-    @memos = Memo.all
+    if logged_in?
+      @memos = current_user.memos
+    else
+      @memos = Memo.all
+    end
   end
 
   # GET /memos/1
@@ -14,7 +18,11 @@ class MemosController < ApplicationController
 
   # GET /memos/new
   def new
-    @memo = Memo.new
+    if logged_in?
+      @memo = current_user.memos.create!
+    else
+      redirect_to root_path, alert: 'Login required'
+    end
   end
 
   # GET /memos/1/edit
@@ -24,16 +32,20 @@ class MemosController < ApplicationController
   # POST /memos
   # POST /memos.json
   def create
-    @memo = Memo.new(memo_params)
+    if logged_in?
+      @memo = Memo.new(memo_params)
 
-    respond_to do |format|
-      if @memo.save
-        format.html { redirect_to @memo, notice: 'Memo was successfully created.' }
-        format.json { render :show, status: :created, location: @memo }
-      else
-        format.html { render :new }
-        format.json { render json: @memo.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @memo.save
+          format.html { redirect_to @memo, notice: 'Memo was successfully created.' }
+          format.json { render :show, status: :created, location: @memo }
+        else
+          format.html { render :new }
+          format.json { render json: @memo.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to root_path, alert: 'Login required'
     end
   end
 
