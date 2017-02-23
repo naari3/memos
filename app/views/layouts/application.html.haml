@@ -44,7 +44,9 @@
             -# --- リンク
             -if logged_in?
               %li
-                %a= current_user.name
+                %p.navbar-text
+                  Hello
+                  %strong= current_user.name
               %li= link_to "ログアウト", session_path, method: :delete
             -else
               %li= link_to "ログイン", new_session_path
