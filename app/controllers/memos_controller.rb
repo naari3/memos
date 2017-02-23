@@ -1,6 +1,9 @@
 class MemosController < ApplicationController
+  helper_method :is_correct_user?
+
   before_action :set_memo, only: [:show, :edit, :update, :destroy]
-  before_filter :login_required, only: [:new, :edit, :create, :update, :destroy]
+  before_action :login_required, only: [:new, :edit, :create, :update, :destroy]
+  before_action :correct_user_required, only: [:edit, :update, :destroy]
 
   # GET /memos
   # GET /memos.json
@@ -24,7 +27,6 @@ class MemosController < ApplicationController
 
   # GET /memos/1/edit
   def edit
-    @memo.user_id != current_user.id
   end
 
   # POST /memos
@@ -81,6 +83,20 @@ class MemosController < ApplicationController
     def login_required
       if not logged_in?
         redirect_to root_path, alert: 'Login required'
+      end
+    end
+
+    def correct_user_required
+      if not is_correct_user?
+        redirect_to root_path, alert: 'incorrect user'
+      end
+    end
+
+    def is_correct_user?
+      if logged_in?
+        @memo.user_id == current_user.id
+      else
+        return false
       end
     end
 end
