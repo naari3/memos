@@ -1,5 +1,5 @@
 !!!
-%html{:lang => "en"}
+%html{:lang => "ja"}
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %meta{:charset => "utf-8"}/
@@ -37,9 +37,17 @@
         %a.navbar-brand{:href => "#"} Memos
         .navbar-collapse.collapse.navbar-responsive-collapse
           %ul.nav.navbar-nav
-            %li= link_to "Link1", "/path1"
-            %li= link_to "Link2", "/path2"
-            %li= link_to "Link3", "/path3"
+            -# %li= link_to "Link1", "/path1"
+            -# %li= link_to "Link2", "/path2"
+            -# %li= link_to "Link3", "/path3"
+          %ul.nav.navbar-nav.navbar-right
+            -# --- リンク
+            -if logged_in?
+              %li
+                %a= current_user.name
+              %li= link_to "ログアウト", session_path, method: :delete
+            -else
+              %li= link_to "ログイン", new_session_path
     .container
       .row
         .col-lg-12
