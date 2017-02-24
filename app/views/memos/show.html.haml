@@ -1,7 +1,7 @@
 - model_class = Memo
 .page-header
   %h1= @memo.title
-.page-body
+.page-body.lead
   != @memo.markdown_rendered.html_safe
 = link_to t('.back', :default => t("helpers.links.back")), memos_path, :class => 'btn btn-default'
 -if is_correct_user?

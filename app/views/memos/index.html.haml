@@ -2,18 +2,24 @@
 .page-header
   %h1= t '.title', default: model_class.model_name.human.pluralize.titleize
 .page-body
+-if logged_in?
+  %p
+    = link_to t('.new', default: t("helpers.links.new")), new_memo_path, class: 'btn btn-primary'
 - @memos.each do |memo|
   .panel.panel-default
     .panel-heading
       %h2= memo.title
-    .panel-body
       .post-created_at
         %p= memo.created_at
+    .panel-body
       .post-description
         %p= memo.body
-      .post-readmore
+      .post-buttons
         -# = link_to t('.show', default: 'read more'), memo_path(memo), class: 'btn btn-primary'
         -# = link_to memo_path(memo) do
-        %a{:class => 'btn btn-primary', :href => memo_path(memo) }
+        %a{:class => 'btn btn-default', :href => memo_path(memo) }
           Read More
           %span{:class => 'glyphicon glyphicon-chevron-right'}
+        -if logged_in?
+          = link_to t('.edit', default: t("helpers.links.edit")), edit_memo_path(memo), class: 'btn btn-default'
+          = link_to t('.destroy', default: t("helpers.links.destroy")), memo_path(memo), method: :delete, data: { confirm: t('.confirm', default: t("helpers.links.confirm", default: 'Are you sure?')) }, class: 'btn btn-danger'
