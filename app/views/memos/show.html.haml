@@ -2,7 +2,7 @@
 .page-header
   %h1= @memo.title
 .page-body
-  ~ @memo.markdown_render.html_safe
+  != @memo.markdown_rendered.html_safe
 = link_to t('.back', :default => t("helpers.links.back")), memos_path, :class => 'btn btn-default'
 -if is_correct_user?
   = link_to t('.edit', :default => t("helpers.links.edit")), edit_memo_path(@memo), :class => 'btn btn-default'
