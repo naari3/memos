@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170224060619) do
+ActiveRecord::Schema.define(version: 20170224062916) do
 
   create_table "comments", force: :cascade do |t|
     t.string   "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "memo_id"
   end
 
   create_table "memos", force: :cascade do |t|
