@@ -4,7 +4,7 @@ class Memo < ApplicationRecord
 
   def markdown_rendered
     unless @markdown
-      renderer = Redcarpet::Render::HTML.new(filter_html: true)
+      renderer = Redcarpet::Render::OriginalHTML.new(filter_html: true)
       @markdown = Redcarpet::Markdown.new(renderer, {
         autolink: true
       })
