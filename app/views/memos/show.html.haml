@@ -1,17 +1,8 @@
 - model_class = Memo
 .page-header
-  %h1= t '.title', :default => model_class.model_name.human.titleize
-%dl.dl-horizontal
-  %dt
-    %strong
-      = model_class.human_attribute_name(:title)
-      \:
-  %dd= @memo.title
-  %dt
-    %strong
-      = model_class.human_attribute_name(:body)
-      \:
-  %dd= @memo.body
+  %h1= @memo.title
+.page-body
+  ~ @memo.markdown_render.html_safe
 = link_to t('.back', :default => t("helpers.links.back")), memos_path, :class => 'btn btn-default'
 -if is_correct_user?
   = link_to t('.edit', :default => t("helpers.links.edit")), edit_memo_path(@memo), :class => 'btn btn-default'
