@@ -9,9 +9,9 @@ class MemosController < ApplicationController
   # GET /memos.json
   def index
     if logged_in?
-      @memos = current_user.memos
+      @memos = current_user.memos.order("created_at desc")
     else
-      @memos = Memo.all
+      @memos = Memo.all.order("created_at desc")
     end
   end
 
