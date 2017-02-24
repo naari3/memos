@@ -1,6 +1,7 @@
 class Memo < ApplicationRecord
   require 'redcarpet'
   belongs_to :user
+  has_many  :comments
 
   def markdown_rendered
     unless @markdown
