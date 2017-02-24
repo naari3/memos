@@ -4,9 +4,10 @@ class Memo < ApplicationRecord
 
   def markdown_rendered
     unless @markdown
-      renderer = Redcarpet::Render::OriginalHTML.new(filter_html: true)
+      renderer = Redcarpet::Render::OriginalHTML.new(filter_html: true, hard_wrap: true)
       @markdown = Redcarpet::Markdown.new(renderer, {
-        autolink: true
+        autolink: true,
+        strikethrough: true,
       })
     end
 
